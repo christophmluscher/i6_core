@@ -1,4 +1,4 @@
-__all__ = ["ExtractOovWordsFromCorpusJob", "CountCorpusWordFrequenciesJob"]
+__all__ = ["ExtractOovWordsFromCorpusJob", "CountCorpusWordFrequenciesJob", "CountSegmentsInCorpusJob"]
 
 import logging
 from collections import Counter
@@ -99,3 +99,20 @@ class CountCorpusWordFrequenciesJob(Job):
         counts = [(v, k) for k, v in words.items()]
         with uopen(self.out_word_counts, "wt") as f:
             f.write("\n".join("%d\t%s" % t for t in sorted(counts, key=lambda t: (-t[0], t[1]))))
+
+
+class CountSegmentsInCorpusJob(Job):
+    """
+    Counts the number of segments in a provided bliss corpus
+    """
+
+    def __init__(self, bliss_corpus: tk.Path):
+        self.bliss_corpus = bliss_corpus
+        self.out_num_segments = self.output_var("num_segments.txt")
+
+    def run(self):
+        corpus = libcorpus.Corpus()
+        corpus.load(self.bliss_corpus.get_path())
+
+        all_segments = list(corpus.segments())
+        self.out_num_segments = len(all_segments)
