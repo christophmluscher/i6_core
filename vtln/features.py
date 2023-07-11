@@ -22,7 +22,7 @@ def VTLNFeaturesJob(
         feature_flow=feature_flow,
         port_name_mapping={"features": "vtln"},
         job_name="VTLN",
-        rtf=0.1,
+        rtf=0.2,
         mem=2,
         extra_config=extra_config,
         extra_post_config=extra_post_config,
