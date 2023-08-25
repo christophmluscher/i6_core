@@ -115,4 +115,4 @@ class CountSegmentsInCorpusJob(Job):
         corpus.load(self.bliss_corpus.get_path())
 
         all_segments = list(corpus.segments())
-        self.out_num_segments = len(all_segments)
+        self.out_num_segments.set(len(all_segments))
